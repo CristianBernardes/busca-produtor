@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProducerRequest;
-use App\Http\Traits\CustomResponseTrait;
+use App\Traits\CustomResponseTrait;
 use App\Services\ProducerService;
+use Auth;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -25,6 +26,19 @@ class ProducerController extends Controller
     public function __construct(ProducerService $producerService)
     {
         $this->service = $producerService;
+    }
+
+    public function index()
+    {
+        try {
+
+            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->searchProducersByLocation(Auth::user())]);
+        } catch (\Exception $e) {
+
+            $checkStatusCodeError = $this->checkStatusCodeError($e);
+
+            return $this->customJsonResponse($e->getMessage(), [], $checkStatusCodeError['status_code'], $checkStatusCodeError['message']);
+        }
     }
 
     /**

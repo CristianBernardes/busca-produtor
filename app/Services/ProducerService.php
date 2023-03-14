@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Repositories\ProducerRepository;
 
 /**
@@ -20,6 +21,11 @@ class ProducerService
     public function __construct(ProducerRepository $producerRepository)
     {
         $this->producerRepository = $producerRepository;
+    }
+
+    public function searchProducersByLocation(User $user)
+    {
+        return $this->producerRepository->searchProducersByLocation($user);
     }
 
     /**

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('password')->comment('Senha do usuário');
             $table->string('latitude')->nullable()->comment('Latitude do usuário');
             $table->string('longitude')->nullable()->comment('Longitude do usuário');
-            $table->boolean('first_access')->default(false)->comment('Verifica se o usuário esta no primeiro acesso ao sistema');
+            $table->boolean('first_access')->default(true)->comment('Verifica se o usuário esta no primeiro acesso ao sistema');
             $table->rememberToken();
             $table->timestamps();
         });

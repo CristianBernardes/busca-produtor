@@ -24,11 +24,24 @@ class UserController extends Controller
         $this->service = $userService;
     }
 
+    public function index()
+    {
+        try {
+
+            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->index()]);
+        } catch (\Exception $e) {
+
+            $checkStatusCodeError = $this->checkStatusCodeError($e);
+
+            return $this->customJsonResponse($e->getMessage(), [], $checkStatusCodeError['status_code'], $checkStatusCodeError['message']);
+        }
+    }
+
     /**
      * @param UserRequest $request
      * @return JsonResponse
      */
-    public function create(UserRequest $request)
+    public function store(UserRequest $request)
     {
         try {
 

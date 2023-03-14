@@ -19,6 +19,11 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
+    public function index()
+    {
+        return $this->userRepository->index();
+    }
+
     /**
      * @param array $data
      * @return mixed
