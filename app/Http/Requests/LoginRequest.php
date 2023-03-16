@@ -29,6 +29,14 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'email.required' => 'O campo e-mail deve ser preenchido!',
+            'password.required' => 'O campo senha deve ser preenchido!',
+        ];
+    }
+
     /**
      * @return array[]
      */
@@ -47,4 +55,5 @@ class LoginRequest extends FormRequest
     //         ],
     //     ];
     // }
+
 }
