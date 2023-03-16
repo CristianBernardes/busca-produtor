@@ -32,8 +32,8 @@ class ProducerRepository extends AbstractRepository
      */
     public function searchProducersByLocation(
         User $user,
-        string $minDistance = null,
-        string $maxDistance = null
+        ?string $minDistance,
+        ?string $maxDistance
     ) {
 
         if ($user->is_admin) {

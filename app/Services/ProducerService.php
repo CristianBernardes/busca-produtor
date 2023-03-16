@@ -23,9 +23,9 @@ class ProducerService
         $this->producerRepository = $producerRepository;
     }
 
-    public function searchProducersByLocation(User $user)
+    public function searchProducersByLocation(User $user, $minDistance, $maxDistance)
     {
-        return $this->producerRepository->searchProducersByLocation($user);
+        return $this->producerRepository->searchProducersByLocation($user, $minDistance, $maxDistance);
     }
 
     /**

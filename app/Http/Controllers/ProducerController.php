@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProducerRequest;
+use Illuminate\Http\Request;
 use App\Traits\CustomResponseTrait;
 use App\Services\ProducerService;
 use Auth;
@@ -28,11 +29,14 @@ class ProducerController extends Controller
         $this->service = $producerService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $minDistance = $request->input('min_distance') ?? null;
+        $maxDistance = $request->input('max_distance') ?? null;
+
         try {
 
-            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->searchProducersByLocation(Auth::user())]);
+            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->searchProducersByLocation(Auth::user(), $minDistance, $maxDistance)]);
         } catch (\Exception $e) {
 
             $checkStatusCodeError = $this->checkStatusCodeError($e);
