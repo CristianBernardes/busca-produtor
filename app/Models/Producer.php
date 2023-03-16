@@ -23,4 +23,14 @@ class Producer extends Model
         'whatsapp_phone',
         'volume_in_liters',
     ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }
