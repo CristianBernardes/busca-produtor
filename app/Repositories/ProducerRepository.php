@@ -66,7 +66,7 @@ class ProducerRepository extends AbstractRepository
             return $query->having('distance', '<=', min($maxDistance ?? 500, 500));
         })->when($minDistance && $maxDistance && $minDistance <= $maxDistance, function ($query) use ($minDistance, $maxDistance) {
             // filter producers within the given distance range
-            return $query->havingBetween('distance', [$minDistance, $maxDistance]);
+            return $query->havingRaw('distance BETWEEN ? AND ?', [$minDistance, $maxDistance]);
         })
             ->orderBy('distance')
             ->get();
