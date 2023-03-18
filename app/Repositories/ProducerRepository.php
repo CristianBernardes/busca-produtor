@@ -32,9 +32,15 @@ class ProducerRepository extends AbstractRepository
      */
     public function searchProducersByLocation(
         User $user,
-        ?string $minDistance,
-        ?string $maxDistance
+        int $minDistance = null,
+        int $maxDistance = null
     ) {
+
+        if ($minDistance === null || $minDistance === 0 && $maxDistance) {
+            $minDistance = 1;
+        } else {
+            $minDistance = null;
+        }
 
         if ($user->is_admin) {
 
@@ -61,9 +67,8 @@ class ProducerRepository extends AbstractRepository
         })->when($minDistance && $maxDistance && $minDistance <= $maxDistance, function ($query) use ($minDistance, $maxDistance) {
             // filter producers within the given distance range
             return $query->havingBetween('distance', [$minDistance, $maxDistance]);
-        }, function ($query) {
-            // return all producers ordered by distance
-            return $query->orderBy('distance');
-        })->get();
+        })
+            ->orderBy('distance')
+            ->get();
     }
 }

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('email')->comment('Email do usuário')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->comment('Senha do usuário');
+            $table->string('city')->comment('Cidade do Cliente');
+            $table->string('state', 2)->comment('UF da cidade do Cliente');
             $table->string('latitude')->nullable()->comment('Latitude do usuário');
             $table->string('longitude')->nullable()->comment('Longitude do usuário');
             $table->boolean('first_access')->default(true)->comment('Verifica se o usuário esta no primeiro acesso ao sistema');

@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('client_name')->comment('Nome do Cliente');
-            $table->string('city')->comment('Cidade do Cliente');
-            $table->string('state', 2)->comment('UF da cidade do Cliente');
             $table->timestamps();
         });
     }
