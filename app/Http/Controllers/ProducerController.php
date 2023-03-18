@@ -50,7 +50,7 @@ class ProducerController extends Controller
      * @param ProducerRequest $request
      * @return JsonResponse
      */
-    public function create(ProducerRequest $request)
+    public function store(ProducerRequest $request)
     {
         try {
 
@@ -61,12 +61,13 @@ class ProducerController extends Controller
                 'coordinates' => DB::raw("POINT($latitude, $longitude)"),
             ]);
 
+            return response()->json($this->service->create($request->all()));
             return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->create($request->all())]);
         } catch (\Exception $e) {
 
             $checkStatusCodeError = $this->checkStatusCodeError($e);
 
-            return $this->customJsonResponse($e->getMessage(), [], $checkStatusCodeError['status_code'], $checkStatusCodeError['message']);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
