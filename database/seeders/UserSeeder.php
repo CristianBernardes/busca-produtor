@@ -17,10 +17,10 @@ class UserSeeder extends Seeder
             'name' => 'Administrador',
             'email' =>  'cristian.aob@gmail.com',
             'password' => Hash::make('123456'),
-            'city' => 'Matelândia',
-            'state' => 'PR',
-            'latitude' => '-25.240922510579942',
-            'longitude' => '-53.98312937614596',
+            'city' => 'Varginha',
+            'state' => 'MG',
+            'latitude' => '-21.54786635815924',
+            'longitude' => '-45.45356328979517',
             'first_access' => false
         ]);
     }

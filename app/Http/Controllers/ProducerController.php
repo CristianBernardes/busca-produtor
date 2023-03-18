@@ -8,6 +8,7 @@ use App\Traits\CustomResponseTrait;
 use App\Services\ProducerService;
 use Auth;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 /**
  *
@@ -52,6 +53,14 @@ class ProducerController extends Controller
     public function create(ProducerRequest $request)
     {
         try {
+
+            $latitude = $request->input('latitude');
+            $longitude = $request->input('longitude');
+
+            $request->merge([
+                'coordinates' => DB::raw("POINT($latitude, $longitude)"),
+            ]);
+
             return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->create($request->all())]);
         } catch (\Exception $e) {
 

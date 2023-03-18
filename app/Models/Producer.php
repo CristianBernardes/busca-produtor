@@ -19,8 +19,7 @@ class Producer extends Model
         'producer_name',
         'city',
         'state',
-        'latitude',
-        'longitude',
+        'coordinates',
         'whatsapp_phone',
         'volume_in_liters',
     ];
