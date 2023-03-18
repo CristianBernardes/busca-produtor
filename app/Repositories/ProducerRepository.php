@@ -65,7 +65,7 @@ class ProducerRepository extends AbstractRepository
         }
 
         $producers->addSelect(
-            DB::raw('ROUND(6371 * acos(cos(radians(' . $user->latitude . ')) * cos(radians(latitude)) * cos(radians(longitude) - radians(' . $user->longitude . ')) + sin(radians(' . $user->latitude . ')) * sin(radians(latitude))), 2) AS distance')
+            DB::raw('ROUND(ST_DISTANCE_SPHERE(coordinates, POINT(' . $user->latitude . ', ' . $user->longitude . ')) / 1000, 2) AS distance')
         );
 
         return $producers->when(!$user->is_admin, function ($query) use ($newMaxDistance) {
