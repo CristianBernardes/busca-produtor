@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Producer extends Model
 {
@@ -33,4 +34,26 @@ class Producer extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     *
+     * @return Attribute
+     */
+    protected function latitude(): Attribute
+    {
+        return Attribute::make(
+            set: static fn ($value) => commaToPeriod($value)
+        );
+    }
+
+    /**
+     *
+     * @return Attribute
+     */
+    protected function longitude(): Attribute
+    {
+        return Attribute::make(
+            set: static fn ($value) => commaToPeriod($value)
+        );
+    }
 }

@@ -84,7 +84,6 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Interact with the user's first name.
      *
      * @return Attribute
      */
@@ -92,6 +91,28 @@ class User extends Authenticatable implements JWTSubject
     {
         return Attribute::make(
             set: static fn ($value) => Hash::make($value)
+        );
+    }
+
+    /**
+     *
+     * @return Attribute
+     */
+    protected function latitude(): Attribute
+    {
+        return Attribute::make(
+            set: static fn ($value) => commaToPeriod($value)
+        );
+    }
+
+    /**
+     *
+     * @return Attribute
+     */
+    protected function longitude(): Attribute
+    {
+        return Attribute::make(
+            set: static fn ($value) => commaToPeriod($value)
         );
     }
 

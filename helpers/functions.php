@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * @param $value
+ * @return array|string|string[]
+ */
+function commaToPeriod($value)
+{
+    return str_replace(',', '.', $value);
+}
+
+/**
+ * @return string[]
+ */
 function httpStatusCodes()
 {
     return [
