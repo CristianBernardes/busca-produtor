@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProducerRequest;
 use Illuminate\Http\Request;
-use App\Traits\CustomResponseTrait;
 use App\Services\ProducerService;
 use Auth;
 use Illuminate\Http\JsonResponse;
@@ -15,8 +14,6 @@ use Illuminate\Support\Facades\DB;
  */
 class ProducerController extends Controller
 {
-    use CustomResponseTrait;
-
     /**
      * @var ProducerService
      */
