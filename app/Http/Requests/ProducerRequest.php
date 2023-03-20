@@ -22,7 +22,24 @@ class ProducerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'producer_name' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'volume_in_liters' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'producer_name.required' => 'O nome do produtor é um campo obrigatório!',
+            'city.required' => 'A cidade do produtor é um campo obrigatório!',
+            'state.required' => 'A UF do produtor é um campo obrigatório!',
+            'latitude.required' => 'A latitude do produtor é um campo obrigatório!',
+            'longitude.required' => 'A longitude do produtor é um campo obrigatório!',
+            'volume_in_liters.required' => 'O volume em litros do produtor é um campo obrigatório!',
         ];
     }
 }

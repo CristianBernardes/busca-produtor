@@ -37,12 +37,18 @@ class ProducerController extends Controller
 
         try {
 
-            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->searchProducersByLocation(Auth::user(), $minDistance, $maxDistance)]);
+            return response()->json($this->service->searchProducersByLocation(Auth::user(), $minDistance, $maxDistance));
         } catch (\Exception $e) {
 
             $checkStatusCodeError = $this->checkStatusCodeError($e);
 
-            return $this->customJsonResponse($e->getMessage(), [], $checkStatusCodeError['status_code'], $checkStatusCodeError['message']);
+            return response()->json(
+                [
+                    'error' => $e->getMessage(),
+                    'message' => $checkStatusCodeError['message']
+                ],
+                $checkStatusCodeError['status_code']
+            );
         }
     }
 
@@ -62,12 +68,17 @@ class ProducerController extends Controller
             ]);
 
             return response()->json($this->service->create($request->all()));
-            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->create($request->all())]);
         } catch (\Exception $e) {
 
             $checkStatusCodeError = $this->checkStatusCodeError($e);
 
-            return response()->json($e->getMessage(), 400);
+            return response()->json(
+                [
+                    'error' => $e->getMessage(),
+                    'message' => $checkStatusCodeError['message']
+                ],
+                $checkStatusCodeError['status_code']
+            );
         }
     }
 
@@ -78,12 +89,19 @@ class ProducerController extends Controller
     public function show(int $id)
     {
         try {
-            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->show($id)]);
+
+            return response()->json($this->service->show($id));
         } catch (\Exception $e) {
 
             $checkStatusCodeError = $this->checkStatusCodeError($e);
 
-            return $this->customJsonResponse($e->getMessage(), [], $checkStatusCodeError['status_code'], $checkStatusCodeError['message']);
+            return response()->json(
+                [
+                    'error' => $e->getMessage(),
+                    'message' => $checkStatusCodeError['message']
+                ],
+                $checkStatusCodeError['status_code']
+            );
         }
     }
 
@@ -96,12 +114,18 @@ class ProducerController extends Controller
     {
         try {
 
-            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->update($request->all(), $id)]);
+            return response()->json($this->service->update($request->all(), $id));
         } catch (\Exception $e) {
 
             $checkStatusCodeError = $this->checkStatusCodeError($e);
 
-            return $this->customJsonResponse($e->getMessage(), [], $checkStatusCodeError['status_code'], $checkStatusCodeError['message']);
+            return response()->json(
+                [
+                    'error' => $e->getMessage(),
+                    'message' => $checkStatusCodeError['message']
+                ],
+                $checkStatusCodeError['status_code']
+            );
         }
     }
 
@@ -112,12 +136,21 @@ class ProducerController extends Controller
     public function destroy(int $id)
     {
         try {
-            return $this->customJsonResponse('Dados carregados com sucesso!', [$this->service->destroy($id)]);
+
+            $this->service->destroy($id);
+
+            return response()->json('Dados carregados com sucesso!');
         } catch (\Exception $e) {
 
             $checkStatusCodeError = $this->checkStatusCodeError($e);
 
-            return $this->customJsonResponse($e->getMessage(), [], $checkStatusCodeError['status_code'], $checkStatusCodeError['message']);
+            return response()->json(
+                [
+                    'error' => $e->getMessage(),
+                    'message' => $checkStatusCodeError['message']
+                ],
+                $checkStatusCodeError['status_code']
+            );
         }
     }
 }
