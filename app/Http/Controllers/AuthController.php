@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use Auth;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -15,7 +16,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'resetPassword']]);
         $this->guard = "api";
     }
 
@@ -82,5 +83,13 @@ class AuthController extends Controller
                 'profile' => $user->profile
             ]
         ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        if (User::where('email', $request->input('email'))->first()) {
+
+            return response()->json(['message' => 'Um e-mail com instruções de recuperação será enviado caso exista este e-mail.']);
+        }
     }
 }

@@ -11,6 +11,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
     Route::get('me', [AuthController::class, 'me']);
 });
 
