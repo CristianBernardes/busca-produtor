@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('password')->comment('Senha do usuário');
             $table->string('city')->comment('Cidade do Cliente');
             $table->string('state', 2)->comment('UF da cidade do Cliente');
-            $table->string('latitude')->nullable()->comment('Latitude do usuário');
-            $table->string('longitude')->nullable()->comment('Longitude do usuário');
+            $table->decimal('latitude', 12, 8)->comment('Latitude do usuário');
+            $table->decimal('longitude', 12, 8)->comment('Longitude do usuário');
             $table->boolean('first_access')->default(true)->comment('Verifica se o usuário esta no primeiro acesso ao sistema');
             $table->rememberToken();
             $table->timestamps();

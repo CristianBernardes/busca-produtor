@@ -15,12 +15,12 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'Administrador',
-            'email' =>  'cristian.aob@gmail.com',
-            'password' => Hash::make('123456'),
-            'city' => 'Varginha',
-            'state' => 'MG',
-            'latitude' => '-21.54786635815924',
-            'longitude' => '-45.45356328979517',
+            'email' =>  'admin@vialacteos.com.br',
+            'password' => Hash::make('12345'),
+            'city' => 'Matelândia',
+            'state' => 'PR',
+            'latitude' => '-25.240922510579942',
+            'longitude' => '-53.98312937614596',
             'first_access' => false
         ]);
     }

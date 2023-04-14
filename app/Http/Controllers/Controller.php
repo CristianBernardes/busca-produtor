@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Exception;
 
 /**
  *
@@ -16,9 +17,9 @@ class Controller extends BaseController
 
     /**
      * @param Exception $e
-     * @return array
+     * @return JsonResponse
      */
-    public function checkStatusCodeError(Exception $e): array
+    public function checkStatusCodeError(Exception $e): JsonResponse
     {
         $statusCode = 400;
 
@@ -26,12 +27,11 @@ class Controller extends BaseController
 
         if (array_key_exists($e->getCode(), httpStatusCodes())) {
             $statusCode = $e->getCode();
-            $message = httpStatusCodes()[$e->getCode()];
         }
 
-        return [
-            'status_code' => $statusCode,
-            'message' => $message
-        ];
+        return response()->json([
+            'message' => $message,
+            'errors' => null
+        ], $statusCode);
     }
 }

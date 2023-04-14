@@ -10,6 +10,14 @@ function commaToPeriod($value)
 }
 
 /**
+ * @return string
+ */
+function randomChars(): string
+{
+    return substr(str_shuffle('abcdefghijklmnopqrstuvxywzABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789!@#$%&*()-.+'), 1, 8);
+}
+
+/**
  * @return string[]
  */
 function httpStatusCodes()

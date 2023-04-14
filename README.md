@@ -1,66 +1,69 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Busca Produtor API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A plataforma "Busca Produtor" tem como objetivo primordial gerenciar a busca de produtores para um cliente específico, permitindo-lhe obter informações relevantes com base em sua localização, como a proximidade dos produtores.Somente usuários com perfil administrativo poderão manipular dados do sistema de maneira mais abrangente, podendo excluir, editar e adicionar novos registros às tabelas de clientes, usuários e produtores.
+Usuários com perfis de cliente terão acesso apenas à visualização de informações sobre produtores, baseadas em sua localização atual, com um limite de até 500 km² de raio.
 
-## About Laravel
+## Observação
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Para que o projeto funcione em sua maquina, é necessário que tenha o Docker instalado e também o Docker Compose.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Instalação
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Clone o repositório com o comando a seguir:
 
-## Learning Laravel
+```bash
+  git clone https://CristianBernardesConvicti@bitbucket.org/via-group/buscaprodutores-api.git
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Abra a pasta do projeto com o comando:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+  cd buscaprodutores-api
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Copie o arquivo todos os arquivos que tenham extensão .example para o seu nome sem o .example com o seguinte comando:
 
-## Laravel Sponsors
+```bash
+  cp .env.example .env
+  cp .editorconfig.example .editorconfig
+  cp docker-compose.yml.example docker-compose.yml
+  cp Dockerfile.example Dockerfile
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Supondo que você tem o docker e o docker compose instalados em sua maquina, inicie os containers com o comando a seguir:
 
-### Premium Partners
+```bash
+docker compose up -d
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+ou
 
-## Contributing
+```bash
+docker-compose up -d
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Após iniciar o containers, execute o seguinte comando para conectar ao container via ssh:
 
-## Code of Conduct
+```bash
+docker exec -it buscaprodutores-app sh
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Já dentro do container do app, execute o seguinte comando para instalar todas as dependencias:
 
-## Security Vulnerabilities
+```bash
+composer install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Ainda dentro do container, execute os seguintes comandos para executar as migrations com os seeders e realizar alguns testes unitarios:
 
-## License
+```bash
+php artisan migrate --seed
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ou caso já tenha uma base populada, execute o seguinte comando:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+Este comando ira popular a base de dados com os dados necessários!

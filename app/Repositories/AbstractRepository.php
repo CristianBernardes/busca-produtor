@@ -2,12 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Contracts\AbstractInterface;
+use Exception;
+use Illuminate\Http\Response;
 
 /**
  *
  */
-abstract class AbstractRepository implements AbstractInterface
+abstract class AbstractRepository
 {
     /**
      * @return mixed
@@ -15,15 +16,22 @@ abstract class AbstractRepository implements AbstractInterface
     abstract public function model(): mixed;
 
     /**
+     * @return string
+     */
+    abstract public function messageErrorNotFound(): string;
+
+    /**
      * @return mixed
      */
     public function index(): mixed
     {
-        return $this->model()::all();
+        return $this->model()::paginate(15);
     }
 
     /**
-     * @param array $data
+     * store
+     *
+     * @param  array $data
      * @return mixed
      */
     public function store(array $data): mixed
@@ -32,43 +40,66 @@ abstract class AbstractRepository implements AbstractInterface
     }
 
     /**
-     * @param int $id
+     * @param $id
      * @return mixed
+     * @throws Exception
      */
-    public function show(int $id): mixed
+    public function show($id): mixed
     {
-        return $this->model()::findOrFail($id);
+        $objectModel = $this->model()::find($id);
+
+        if (!$objectModel) {
+            throw new Exception($this->messageErrorNotFound(), Response::HTTP_NOT_FOUND);
+        }
+
+        return $objectModel;
     }
 
     /**
+     * @param $id
      * @param array $data
-     * @param int $id
      * @return mixed
+     * @throws Exception
      */
-    public function update(array $data, int $id): mixed
+    public function update($id, array $data): mixed
     {
-        $model = $this->model()::findOrFail($id);
+        $objectModel = $this->model()::find($id);
 
-        $model->update($data);
+        if (!$objectModel) {
+            throw new Exception($this->messageErrorNotFound(), Response::HTTP_NOT_FOUND);
+        }
 
-        return $model;
+        $update =  $objectModel->update($data);
+
+        if ($update) {
+
+            return $this->model()::find($id);
+        } else {
+            throw new Exception('Não foi possível atualizar os dados.', Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 
-    /**
-     * @param int $id
-     * @return bool
-     */
-    public function destroy(int $id): bool
-    {
-        $model = $this->model()::findOrFail($id);
 
-        $delete = $model->delete();
+    /**
+     * @param $id
+     * @return string
+     * @throws Exception
+     */
+    public function destroy($id): string
+    {
+        $objectModel = $this->model()::find($id);
+
+        if (!$objectModel) {
+            throw new Exception($this->messageErrorNotFound(), Response::HTTP_NOT_FOUND);
+        }
+
+        $delete =  $objectModel->delete();
 
         if ($delete) {
 
-            return true;
+            return 'Dado deletado com sucesso';
+        } else {
+            throw new Exception('Não foi possível atualizar os dados.', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
-        return false;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Producer extends Model
 {
@@ -32,30 +32,32 @@ class Producer extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'coordinates',
         'created_at',
-        'updated_at',
-        'coordinates'
+        'updated_at'
     ];
 
     /**
+     * Get the attribute instance for the city.
      *
      * @return Attribute
      */
-    protected function latitude(): Attribute
+    protected function city(): Attribute
     {
         return Attribute::make(
-            set: static fn ($value) => commaToPeriod($value)
+            set: static fn ($value) => ucwords($value)
         );
     }
 
     /**
+     * Get the attribute instance for the state.
      *
      * @return Attribute
      */
-    protected function longitude(): Attribute
+    protected function state(): Attribute
     {
         return Attribute::make(
-            set: static fn ($value) => commaToPeriod($value)
+            set: static fn ($value) => strtoupper($value)
         );
     }
 }

@@ -3,17 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-/**
- *
- */
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -43,6 +41,8 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -55,24 +55,8 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * @var string[]
-     */
-    protected $appends = ['profile'];
-
-    /**
-     * @return string
-     */
-    public function getProfileAttribute(): string
-    {
-        if ($this->client_id === null) {
-
-            return 'administrator';
-        }
-
-        return 'client';
-    }
-
-    /**
+     * Determine if the user is an administrator.
+     *
      * @return bool
      */
     public function getIsAdminAttribute(): bool
@@ -86,6 +70,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Get the attribute instance for the password.
      *
      * @return Attribute
      */
@@ -97,28 +82,28 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Get the attribute instance for the city.
      *
      * @return Attribute
      */
-    protected function latitude(): Attribute
+    protected function city(): Attribute
     {
         return Attribute::make(
-            set: static fn ($value) => commaToPeriod($value)
+            set: static fn ($value) => ucwords($value)
         );
     }
 
     /**
+     * Get the attribute instance for the state.
      *
      * @return Attribute
      */
-    protected function longitude(): Attribute
+    protected function state(): Attribute
     {
         return Attribute::make(
-            set: static fn ($value) => commaToPeriod($value)
+            set: static fn ($value) => strtoupper($value)
         );
     }
-
-    // Rest omitted for brevity
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -138,5 +123,59 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * @param self $user
+     *
+     * @return array
+     */
+    public static function getPermissionsUser(self $user): array
+    {
+        return $user->isAdmin ? [
+            'users' => [
+                'GET' => true,
+                'GET/ID' => true,
+                'POST' => true,
+                'PUT' => true,
+                'DELETE' => true
+            ],
+            'clients' => [
+                'GET' => true,
+                'GET/ID' => true,
+                'POST' => true,
+                'PUT' => true,
+                'DELETE' => true
+            ],
+            'producers' => [
+                'GET' => true,
+                'GET/ID' => true,
+                'POST' => true,
+                'PUT' => true,
+                'DELETE' => true
+            ],
+        ] : [
+            'users' => [
+                'GET' => false,
+                'GET/ID' => false,
+                'POST' => false,
+                'PUT' => false,
+                'DELETE' => false
+            ],
+            'clients' => [
+                'GET' => false,
+                'GET/ID' => false,
+                'POST' => false,
+                'PUT' => false,
+                'DELETE' => false
+            ],
+            'producers' => [
+                'GET' => true,
+                'GET/ID' => true,
+                'POST' => false,
+                'PUT' => false,
+                'DELETE' => false
+            ],
+        ];
     }
 }

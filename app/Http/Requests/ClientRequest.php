@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ *
+ */
 class ClientRequest extends FormRequest
 {
     /**
@@ -21,8 +24,23 @@ class ClientRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = request()->segment(count(request()->segments()));
+
         return [
-            //
+            'client_name' => "required|unique:clients,client_name,{$id},id"
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function messages()
+    {
+        $clientName = request()->all()['client_name'] ?? 'Nome';
+
+        return [
+            'client_name.required' => 'O campo client_name (nome do cliente) deve ser preenchido!',
+            'client_name.unique' => "O nome $clientName já esta em uso!",
         ];
     }
 }

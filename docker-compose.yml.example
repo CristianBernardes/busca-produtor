@@ -1,0 +1,77 @@
+version: "3.7"
+
+services:
+  # image project
+  app:
+    container_name: buscaprodutores-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: buscaprodutores
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - .:/var/www
+    networks:
+      - buscaprodutores
+
+  # nginx
+  nginx:
+    container_name: buscaprodutores-nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - buscaprodutores
+
+  # db mysql
+  mysql:
+    container_name: buscaprodutores-mysql
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - ./.docker/mysql/dbdata:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --sql-mode="STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION" --skip-ssl
+    ports:
+      - "3388:3306"
+    networks:
+      - buscaprodutores
+
+  phpmyadmin:
+    container_name: buscaprodutores-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+      UPLOAD_LIMIT: 300M
+    volumes:
+      - ./phpmyadmin/php.ini-development:/usr/local/etc/php/php.ini-development
+      - ./phpmyadmin/php.ini-production:/usr/local/etc/php/php.ini-production
+    networks:
+      - buscaprodutores
+
+  mailpit:
+      container_name: buscaprodutores-mailpit
+      image: axllent/mailpit
+      restart: unless-stopped
+      ports:
+        - "8025:8025" # Para acessar a interface web do MailHog
+        - "1025:1025" # Para permitir que outros serviços usem o MailHog como servidor SMTP
+      networks:
+        - buscaprodutores
+
+networks:
+  buscaprodutores:
+    driver: bridge
